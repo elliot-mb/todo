@@ -1,4 +1,5 @@
-# todo-fireship
+# Todo list
+Todo list that can be hosted on npm that uses local storage to store your list items
 
 ## Project setup
 ```
@@ -14,11 +15,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
