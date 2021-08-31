@@ -2,15 +2,25 @@
 
 <template>
   <div>
-
-    <h1 id="heading">Things to do</h1>
-
-    <div class="todo">
+    <div id="todo">
+      <h1 id="heading">Things to do</h1>
       <form v-on:submit.prevent="doneTodo">
         <ul>
           <li v-for="(todo, index) in todos" v-bind:key="todo">
             <button id="x-button" type="submit" v-on:click="doneIndex=index">X</button>
             {{ todo }}
+          </li>
+        </ul>
+      </form>
+    </div>
+
+    <div id="done">
+      <h1 id="heading">Tasks complete</h1>
+      <form v-on:submit.prevent="doneDone">
+        <ul>
+          <li v-for="(done, index) in dones" v-bind:key="done">
+            <button id="x-button" type="submit" v-on:click="completeIndex=index">X</button>
+            {{ done }}
           </li>
         </ul>
       </form>
@@ -37,26 +47,38 @@ export default{
       todos:[],
       todoText:'',
       doneIndex:0,
+      dones:[],
+      completeIndex:0
     };
   },
   methods: { //to change the state of this object
     addTodo: function(){
       this.todos = [...this.todos, `> ${this.todoText}`]; //appends todoText of element to array
       this.todoText = '';
-      localStorage.setItem('todos', JSON.stringify(this.todos));
+      this.setLocal();
     },
     doneTodo: function(){
-      this.todos.splice(this.doneIndex, 1);
-      localStorage.setItem('todos', JSON.stringify(this.todos));
+      this.dones = [...this.dones, `${this.todos.splice(this.doneIndex, 1)}`];
+      this.setLocal();
     },
     clearTodo: function(){
       this.todos = [];
+      this.setLocal();
+    },
+    doneDone: function(){
+      this.dones.splice(this.completeIndex, 1);
+      this.setLocal();
+    },
+    setLocal: function(){
       localStorage.setItem('todos', JSON.stringify(this.todos));
+      localStorage.setItem('dones', JSON.stringify(this.dones));
     }
   },
   mounted: function(){
     const existingTodos = localStorage.getItem('todos');
+    const existingDones = localStorage.getItem('dones');
     this.todos = JSON.parse(existingTodos) || [];
+    this.dones = JSON.parse(existingDones) || [];
   }
 };
 </script>
@@ -73,8 +95,9 @@ export default{
 
 #heading{
   font-size: 1.5em;
-  margin-top: -40px;
-  padding: 15px;
+  margin-top: 15px;
+  margin-left: 42px;
+  padding: 0px;
 }
 
 #clear{
@@ -118,14 +141,26 @@ input{
   padding: 5px;
 }
 
-.todo{
+#todo{
   text-align: left;
   margin-left: 25vw;
   margin-right: 25vw;
   margin-top: 10px;
   padding: 18px 45px 27.5px 0;
-  height: calc(100vh - 300px);
+  height: calc(48vh - 150px);
   background-color: #ddeeff;
+  overflow: auto;
+  border-radius: 10px;
+}
+
+#done{
+  text-align: left;
+  margin-left: 25vw;
+  margin-right: 25vw;
+  margin-top: 15px;
+  padding: 18px 45px 27.5px 0;
+  height: calc(52vh - 190px);
+  background-color: #ddddee;
   overflow: auto;
   border-radius: 10px;
 }
