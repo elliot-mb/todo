@@ -58,7 +58,7 @@ export default{
       this.setLocal();
     },
     doneTodo: function(){
-      this.dones = [...this.dones, `${this.todos.splice(this.doneIndex, 1)}`];
+      this.dones = [`${this.todos.splice(this.doneIndex, 1)}`, ...this.dones];
       this.setLocal();
     },
     clearTodo: function(){
